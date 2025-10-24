@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOON Aptos Ecosystem Dashboard</title>
-    <!-- Load Tailwind CSS and Inter Font -->
+    <!-- Tailwind CSS ve Inter Font -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -27,7 +27,6 @@
             background-color: var(--card-background);
             border: 1px solid rgba(55, 65, 81, 0.5);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
 
         .card:hover {
@@ -41,14 +40,14 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Chart Container Styling */
+        /* Grafik Konteyneri */
         #chart-placeholder {
             height: 250px;
             background: linear-gradient(to top, #1f2937, #111827);
             position: relative;
         }
 
-        /* Line Graph Draw Animation */
+        /* Grafik Çizgisi Animasyonu */
         @keyframes drawLine {
             from {
                 stroke-dashoffset: 1000;
@@ -68,7 +67,7 @@
 <body>
 
     <div class="container mx-auto p-4 md:p-8">
-        <!-- Header Section -->
+        <!-- Başlık Bölümü -->
         <header class="text-center mb-12">
             <h1 class="text-5xl md:text-7xl font-extrabold gradient-text">
                 LOON
@@ -81,11 +80,11 @@
             </p>
         </header>
 
-        <!-- Live Statistics (Stat Cards) -->
+        <!-- Canlı İstatistikler (Stat Cards) -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             
-            <!-- Current Holder Count -->
-            <div id="holders-card" class="card p-6 rounded-2xl">
+            <!-- Mevcut Sahip Sayısı -->
+            <div id="holders-card" class="card p-6 rounded-2xl shadow-xl">
                 <p class="text-sm font-semibold text-gray-400 flex items-center mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-blue-400">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a4.5 4.5 0 0 0 2.343-3.375M12 12.75a4.5 4.5 0 0 1 2.343-3.375M12 12.75A4.5 4.5 0 0 1 9.657 9.375M12 12.75v3.625M9.657 15.375h4.686M12 12.75v3.625m4.686 0H9.657m7.03-4.375c.348-.152.693-.298 1.037-.436.72-.284 1.254-.925 1.254-1.666V8.188c0-1.054-.91-1.634-1.859-1.25l-.176.071m-5.88 4.305a2.25 2.25 0 0 1-4.331 1.039m4.331-1.039v3.625m-4.331-3.625h4.331m0 0a2.25 2.25 0 0 0 2.343-3.375M12 15.375v3.375h2.25" />
@@ -98,24 +97,24 @@
                 <p class="text-sm text-gray-500">On the Aptos Network</p>
             </div>
 
-            <!-- Daily Change -->
-            <div id="change-card" class="card p-6 rounded-2xl">
+            <!-- Günlük Değişim -->
+            <div id="change-card" class="card p-6 rounded-2xl shadow-xl">
                 <p class="text-sm font-semibold text-gray-400 flex items-center mb-3">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-purple-400">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m4.5-4.5v4.5m4.5-6.75v6.75m0 0L17.25 10m-4.5 0L10.5 8m-4.5 0L3.75 6m12 12l2.25 2.25m-2.25-2.25L15 21" />
                     </svg>
                     Daily Holder Change
                 </p>
-                <!-- Holder Change Value -->
+                <!-- Holder Değişim Değeri -->
                 <div class="text-4xl font-bold mb-1" id="daily-change-value">
                     Loading...
                 </div>
-                <!-- Percentage Change Description -->
+                <!-- Yüzde Değişim Açıklaması (Türkçe) -->
                 <p class="text-sm" id="daily-change-percent">Calculating...</p>
             </div>
 
-            <!-- Contract Address -->
-            <div class="card p-6 rounded-2xl flex flex-col justify-between">
+            <!-- Kontrat Adresi -->
+            <div class="card p-6 rounded-2xl shadow-xl flex flex-col justify-between">
                 <div>
                     <p class="text-sm font-semibold text-gray-400 flex items-center mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-green-400">
@@ -133,22 +132,22 @@
             </div>
         </section>
         
-        <!-- Holder Change Chart (Line Graph Simulation) -->
+        <!-- Sahip Değişim Grafiği (Çizgi Grafik Simülasyonu) -->
         <section class="mb-12">
-            <div class="card p-6 rounded-2xl">
+            <div class="card p-6 rounded-2xl shadow-xl">
                 <h2 class="text-xl font-bold mb-4 text-white">Holder Growth Chart (Last 7 Days)</h2>
                 <div id="chart-placeholder" class="rounded-xl overflow-hidden relative p-4">
-                    <!-- Simple Line Chart simulation using SVG -->
+                    <!-- SVG ile basit bir Çizgi Grafik (Line Chart) simülasyonu -->
                     <svg width="100%" height="100%" viewBox="0 0 1000 220" preserveAspectRatio="none">
                         
-                        <!-- Grid Lines (Horizontal) -->
+                        <!-- Grid Lines (Yatay) -->
                         <line x1="0" y1="20" x2="1000" y2="20" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
                         <line x1="0" y1="70" x2="1000" y2="70" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
                         <line x1="0" y1="120" x2="1000" y2="120" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
                         <line x1="0" y1="170" x2="1000" y2="170" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
 
-                        <!-- Line Data Points (SVG Path 'd' attribute) -->
-                        <!-- This path simulates an upward trend (Bottom Left -> Top Right) -->
+                        <!-- Çizgi Veri Noktaları (SVG Path 'd' attribute) -->
+                        <!-- Bu nokta dizisi, rastgele bir yükseliş trendi simüle eder (Sol alt -> Sağ üst) -->
                         <path 
                             class="line-graph-path"
                             d="M 0 170 
@@ -163,7 +162,7 @@
                             stroke-linejoin="round"
                         />
                         
-                        <!-- Area Under the Line (Gradient Area) -->
+                        <!-- Çizgi Altındaki Alan (Gradient Area) -->
                         <defs>
                             <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
@@ -183,7 +182,7 @@
                         />
                     </svg>
 
-                    <!-- Labels (Days) -->
+                    <!-- Etiketler (Günler) -->
                     <div class="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-400 px-4 pb-1">
                         <span>Day -6</span>
                         <span>Day -5</span>
@@ -197,38 +196,11 @@
             </div>
         </section>
 
-        <!-- LLM Tools Section -->
-        <section class="mb-12">
-            <div class="card p-6 rounded-2xl">
-                <h2 class="text-xl font-bold mb-4 text-white flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2 text-purple-400">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.455L14.25 6l1.035-.259a3.375 3.375 0 0 0 2.455-2.455L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.455L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.455 2.455Z" />
-                    </svg>
-                    Gemini LLM Tools (LOON Analysis)
-                </h2>
-                <p class="text-gray-400 mb-6">Use the power of Gemini to instantly generate summaries and social media headlines about LOON.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <button id="summary-btn" onclick="generateSummary()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md hover:shadow-lg disabled:opacity-50">
-                        Token Summary and Analysis ✨
-                    </button>
-                    <button id="headline-btn" onclick="generateHeadline()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md hover:shadow-lg disabled:opacity-50">
-                        Generate News Headline ✨
-                    </button>
-                </div>
-
-                <!-- Result Area -->
-                <div id="llm-result" class="mt-4 min-h-24 bg-gray-800/50 p-4 rounded-xl flex items-center justify-center text-gray-400 text-center">
-                    Select the analysis or headline you wish to generate.
-                </div>
-            </div>
-        </section>
-        
-        <!-- Token Info and Links -->
+        <!-- Token Bilgileri ve Bağlantılar -->
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             
-            <!-- About LOON -->
-            <div class="card p-6 rounded-2xl">
+            <!-- LOON Hakkında -->
+            <div class="card p-6 rounded-2xl shadow-xl">
                 <h2 class="text-xl font-bold mb-4 text-white">About LOON</h2>
                 <ul class="space-y-3 text-gray-400">
                     <li class="flex justify-between items-center border-b border-gray-700 pb-2">
@@ -250,8 +222,8 @@
                 </ul>
             </div>
 
-            <!-- Community Links -->
-            <div class="card p-6 rounded-2xl">
+            <!-- Topluluk Bağlantıları -->
+            <div class="card p-6 rounded-2xl shadow-xl">
                 <h2 class="text-xl font-bold mb-4 text-white">Community & Resources</h2>
                 <div class="flex flex-wrap gap-4">
                     <a href="https://x.com/theloonies_nft" class="flex items-center bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full transition duration-200">
@@ -281,46 +253,8 @@
         const dailyChangePercentEl = document.getElementById('daily-change-percent');
         const tokenPriceEl = document.getElementById('token-price');
         
-        // Global variables for Gemini API
-        const apiKey = ""; // Canvas runtime provides this if left empty
-        const geminiFlashUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-        // Global state to store the latest fetched stats for LLM use
-        let currentStats = null;
-        
         // Simulated Contract Address
         const contractAddress = "0x268d4a7a2ad93274edf6116f9f20ad8455223a7ab5fc73154f687e7dbc3e3ec6::LOON::LOON";
-
-        /**
-         * Handles API fetch with exponential backoff for retries.
-         */
-        async function fetchWithRetry(url, options, retries = 5) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) {
-                        // If it's a 429 (Rate Limit), try again
-                        if (response.status === 429 && i < retries - 1) {
-                            const delay = Math.pow(2, i) * 1000 + Math.floor(Math.random() * 1000);
-                            console.warn(`Rate limit hit, retrying in ${delay}ms...`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            continue; 
-                        }
-                        // For other errors, throw
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response;
-                } catch (error) {
-                    if (i < retries - 1) {
-                        const delay = Math.pow(2, i) * 1000 + Math.floor(Math.random() * 1000);
-                        console.warn(`Fetch error (${error.message}), retrying in ${delay}ms...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                    } else {
-                        throw new Error(`Failed to fetch after ${retries} attempts: ${error.message}`);
-                    }
-                }
-            }
-        }
 
         /**
          * Simulates fetching data from a real Aptos indexer/API.
@@ -329,17 +263,14 @@
             // Mock data from API
             const mockStats = {
                 currentHolders: 14523,
-                dailyHolderChange: 157, // positive = increase. Change this to a negative number to test the 'decrease' logic.
+                dailyHolderChange: 157, // positive = increase. Change this to a negative number to test 'azaldı' logic.
                 dailyHolderChangePercent: 1.09,
                 priceUSD: 0.00000045,
-                marketCapUSD: 6500000, 
             };
 
             // Simulate a network delay
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Set global stats
-            currentStats = mockStats;
             return mockStats;
         }
 
@@ -372,19 +303,19 @@
                 dailyChangeValueEl.classList.remove('text-green-400', 'text-red-400', 'text-white');
                 dailyChangePercentEl.classList.remove('text-green-400', 'text-red-400');
                 
-                // Apply new styling and English descriptive text
+                // Apply new styling and Turkish descriptive text
                 if (stats.dailyHolderChange > 0) {
                     dailyChangeValueEl.classList.add('text-green-400');
                     dailyChangePercentEl.classList.add('text-green-400');
-                    dailyChangePercentEl.textContent = `(${stats.dailyHolderChangePercent.toFixed(2)}%) Percentage increase`;
+                    dailyChangePercentEl.textContent = `(${stats.dailyHolderChangePercent.toFixed(2)}%) Yüzde olarak arttı`;
                 } else if (stats.dailyHolderChange < 0) {
                     dailyChangeValueEl.classList.add('text-red-400');
                     dailyChangePercentEl.classList.add('text-red-400');
-                    dailyChangePercentEl.textContent = `(${stats.dailyHolderChangePercent.toFixed(2)}%) Percentage decrease`;
+                    dailyChangePercentEl.textContent = `(${stats.dailyHolderChangePercent.toFixed(2)}%) Yüzde olarak azaldı`;
                 } else {
                     // Change is zero
                     dailyChangeValueEl.classList.add('text-white');
-                    dailyChangePercentEl.textContent = 'No percentage change';
+                    dailyChangePercentEl.textContent = 'Yüzde değişim yok';
                 }
                 
                 // Price
@@ -394,149 +325,8 @@
                 console.error("Error loading statistics:", error);
                 currentHoldersEl.textContent = "Error";
                 dailyChangeValueEl.textContent = "Error";
-                dailyChangePercentEl.textContent = "Data failed to load";
+                dailyChangePercentEl.textContent = "Veri yüklenemedi";
             }
-        }
-
-        /**
-         * Generates a summary and analysis using Gemini and Google Search.
-         */
-        async function generateSummary() {
-            const resultEl = document.getElementById('llm-result');
-            const summaryButton = document.getElementById('summary-btn');
-
-            if (!currentStats) {
-                alertBox('Wait for the statistics to load first.', 'error');
-                return;
-            }
-
-            // --- LLM Call Start ---
-            summaryButton.disabled = true;
-            summaryButton.innerHTML = '<span class="animate-spin mr-2">🌀</span> Analyzing...';
-            resultEl.innerHTML = '<p class="text-gray-500 text-center py-4">Gemini API is running, please wait...</p>';
-            
-            const userQuery = `Based on the latest up-to-date information, and using the following simulation data, write a professional and concise single-paragraph summary and analysis about the $LOON token on Aptos to inform investors. 
-                - Current Holder Count: ${formatNumber(currentStats.currentHolders)}
-                - Daily Holder Change: ${currentStats.dailyHolderChange > 0 ? '+' : ''}${formatNumber(currentStats.dailyHolderChange)} (${currentStats.dailyHolderChangePercent.toFixed(2)}%)
-                - Simulation Price: $${currentStats.priceUSD}
-                - Simulation Market Cap: $${formatNumber(currentStats.marketCapUSD)}
-                - Language: English.
-            `;
-            
-            const systemPrompt = "You are a world-renowned financial analyst specializing in cryptocurrencies. Your task is to combine the provided data with real-time search results to deliver a brief, professional, single-paragraph summary and analysis for crypto investors.";
-            
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                tools: [{ "google_search": {} }],
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            };
-
-            try {
-                const response = await fetchWithRetry(geminiFlashUrl, options);
-                const result = await response.json();
-                
-                const candidate = result.candidates?.[0];
-
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    const text = candidate.content.parts[0].text;
-                    let sourcesHtml = '';
-                    
-                    // Extract grounding sources (citations)
-                    const groundingMetadata = candidate.groundingMetadata;
-                    if (groundingMetadata && groundingMetadata.groundingAttributions) {
-                        const sources = groundingMetadata.groundingAttributions
-                            .map(attr => ({ uri: attr.web?.uri, title: attr.web?.title }))
-                            .filter(source => source.uri && source.title)
-                            .slice(0, 3); // Limit to top 3 sources
-
-                        if (sources.length > 0) {
-                            sourcesHtml = '<div class="mt-4 text-xs text-gray-400 border-t border-gray-700 pt-3">';
-                            sourcesHtml += '<p class="font-semibold mb-1">Sources:</p><ul>';
-                            sources.forEach((source, index) => {
-                                sourcesHtml += `<li>${index + 1}. <a href="${source.uri}" target="_blank" class="text-blue-400 hover:underline">${source.title}</a></li>`;
-                            });
-                            sourcesHtml += '</ul></div>';
-                        }
-                    }
-
-                    resultEl.innerHTML = `<div class="p-4 bg-gray-700/50 rounded-xl">${text}</div>${sourcesHtml}`;
-                } else {
-                    throw new Error("Could not receive a valid response from Gemini.");
-                }
-
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                resultEl.innerHTML = `<p class="text-red-400 text-center py-4">Error: Analysis could not be generated. (Error: ${error.message})</p>`;
-            } finally {
-                summaryButton.disabled = false;
-                summaryButton.innerHTML = 'Token Summary and Analysis ✨';
-            }
-            // --- LLM Call End ---
-        }
-
-        /**
-         * Generates a catchy social media headline based on holder change.
-         */
-        async function generateHeadline() {
-            const resultEl = document.getElementById('llm-result');
-            const headlineButton = document.getElementById('headline-btn');
-            
-            if (!currentStats) {
-                alertBox('Wait for the statistics to load first.', 'error');
-                return;
-            }
-
-            // --- LLM Call Start ---
-            headlineButton.disabled = true;
-            headlineButton.innerHTML = '<span class="animate-spin mr-2">🌀</span> Generating...';
-            resultEl.innerHTML = '<p class="text-gray-500 text-center py-4">Gemini API is running, please wait...</p>';
-
-            const isPositive = currentStats.dailyHolderChange >= 0;
-            const changeType = isPositive ? 'increase' : 'decrease';
-            const sign = isPositive ? '+' : '';
-            const changeValue = formatNumber(Math.abs(currentStats.dailyHolderChange));
-            
-            const userQuery = `The $LOON token on Aptos has seen a noticeable holder ${changeType} of ${sign}${changeValue} (${currentStats.dailyHolderChangePercent.toFixed(2)}%) in the last 24 hours. Use this data to create a single-sentence, short, and enthusiastic (if positive change) or thought-provoking (if negative change) news headline for Twitter (X) that includes hashtags and emojis to immediately capture the attention of the crypto community. The output should contain only the headline. Language: English.`;
-            
-            const systemPrompt = "You are a creative expert in social media content creation for cryptocurrencies and the Aptos ecosystem. Generate an enthusiastic and engagement-focused Twitter headline based on the provided data.";
-            
-            const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
-                // No grounding needed, purely creative based on prompt
-                systemInstruction: {
-                    parts: [{ text: systemPrompt }]
-                },
-            };
-
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            };
-
-            try {
-                const response = await fetchWithRetry(geminiFlashUrl, options);
-                const result = await response.json();
-                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "Headline could not be generated.";
-                
-                resultEl.innerHTML = `<div class="p-4 bg-gray-700/50 rounded-xl"><p class="text-lg text-yellow-300 font-mono break-words">${text}</p></div>`;
-
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                resultEl.innerHTML = `<p class="text-red-400 text-center py-4">Error: Headline could not be generated. (Error: ${error.message})</p>`;
-            } finally {
-                headlineButton.disabled = false;
-                headlineButton.innerHTML = 'Generate News Headline ✨';
-            }
-            // --- LLM Call End ---
         }
 
         /**
@@ -551,9 +341,9 @@
             
             try {
                 document.execCommand('copy');
-                alertBox('Contract address copied to clipboard!', 'success');
+                alertBox('Sözleşme adresi panoya kopyalandı!', 'success');
             } catch (err) {
-                alertBox('Copying failed.', 'error');
+                alertBox('Kopyalama başarısız oldu.', 'error');
             }
             document.body.removeChild(tempInput);
         }
