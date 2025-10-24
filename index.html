@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOON Aptos Ecosystem Dashboard</title>
+    <!-- Tailwind CSS ve Inter Font -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        :root {
+            --primary-color: #5b21b6; /* Purple */
+            --secondary-color: #3b82f6; /* Blue */
+            --background-color: #030712; /* Dark Gray */
+            --card-background: #111827; /* Medium Dark Gray */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: #e5e7eb;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(91, 33, 182, 0.3), 0 4px 6px -2px rgba(91, 33, 182, 0.1);
+        }
+
+        .gradient-text {
+            background-image: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Basit bir grafik simülasyonu için özel stil */
+        #chart-placeholder {
+            height: 250px;
+            background: linear-gradient(to top, #1f2937, #111827);
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Başlık Bölümü -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl md:text-7xl font-extrabold gradient-text">
+                LOON
+            </h1>
+            <p class="text-xl md:text-2xl mt-2 text-gray-400">The Premier Token of the Aptos Ecosystem</p>
+        </header>
+
+        <!-- Canlı İstatistikler (Stat Cards) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            
+            <!-- Mevcut Sahip Sayısı -->
+            <div id="holders-card" class="card p-6 rounded-2xl shadow-xl">
+                <p class="text-sm font-semibold text-gray-400 flex items-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-blue-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a4.5 4.5 0 0 0 2.343-3.375M12 12.75a4.5 4.5 0 0 1 2.343-3.375M12 12.75A4.5 4.5 0 0 1 9.657 9.375M12 12.75v3.625M9.657 15.375h4.686M12 12.75v3.625m4.686 0H9.657m7.03-4.375c.348-.152.693-.298 1.037-.436.72-.284 1.254-.925 1.254-1.666V8.188c0-1.054-.91-1.634-1.859-1.25l-.176.071m-5.88 4.305a2.25 2.25 0 0 1-4.331 1.039m4.331-1.039v3.625m-4.331-3.625h4.331m0 0a2.25 2.25 0 0 0 2.343-3.375M12 15.375v3.375h2.25" />
+                    </svg>
+                    Current Holders
+                </p>
+                <div class="text-4xl font-bold text-white mb-1" id="current-holders">
+                    Loading...
+                </div>
+                <p class="text-sm text-gray-500">On the Aptos Network</p>
+            </div>
+
+            <!-- Günlük Değişim -->
+            <div id="change-card" class="card p-6 rounded-2xl shadow-xl">
+                <p class="text-sm font-semibold text-gray-400 flex items-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-purple-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m4.5-4.5v4.5m4.5-6.75v6.75m0 0L17.25 10m-4.5 0L10.5 8m-4.5 0L3.75 6m12 12l2.25 2.25m-2.25-2.25L15 21" />
+                    </svg>
+                    Daily Holder Change
+                </p>
+                <div class="text-4xl font-bold mb-1" id="daily-change-value">
+                    Loading...
+                </div>
+                <p class="text-sm" id="daily-change-percent">Calculating...</p>
+            </div>
+
+            <!-- Kontrat Adresi -->
+            <div class="card p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                    <p class="text-sm font-semibold text-gray-400 flex items-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-green-400">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v7.5A2.25 2.25 0 0 0 6 15h4.5m-2.25 2.25H16.5A2.25 2.25 0 0 0 18.75 15V9.75A2.25 2.25 0 0 0 16.5 7.5h-4.5M10.5 7.5l-.234-.699a2.25 2.25 0 0 0-2.02-1.301H6" />
+                        </svg>
+                        Contract Address
+                    </p>
+                    <code class="text-xs break-all text-yellow-300 bg-gray-700 p-2 rounded-lg inline-block w-full">
+                        0x268d4a7a2ad93274edf6116f9f20ad8455223a7ab5fc73154f687e7dbc3e3ec6::LOON::LOON
+                    </code>
+                </div>
+                <button onclick="copyContractAddress()" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-200 shadow-md hover:shadow-lg">
+                    Copy Address
+                </button>
+            </div>
+        </section>
+        
+        <!-- Sahip Değişim Grafiği (Simülasyon) -->
+        <section class="mb-12">
+            <div class="card p-6 rounded-2xl shadow-xl">
+                <h2 class="text-xl font-bold mb-4 text-white">Holder Growth Chart (Last 7 Days)</h2>
+                <div id="chart-placeholder" class="rounded-xl overflow-hidden relative">
+                    <!-- Basit bir grafik simülasyonu -->
+                    <div class="absolute inset-0 flex items-end justify-between p-4 opacity-75">
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[40%]"></div>
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[60%]"></div>
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[50%]"></div>
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[80%]"></div>
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[70%]"></div>
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[90%]"></div>
+                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[95%]"></div>
+                    </div>
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-500 text-lg font-mono">
+                        [Chart API connection simulation]
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Token Bilgileri ve Bağlantılar -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            
+            <!-- LOON Hakkında -->
+            <div class="card p-6 rounded-2xl shadow-xl">
+                <h2 class="text-xl font-bold mb-4 text-white">About LOON</h2>
+                <ul class="space-y-3 text-gray-400">
+                    <li class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span>Platform:</span>
+                        <span class="font-semibold text-blue-400">Aptos</span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span>Total Supply:</span>
+                        <span class="font-semibold text-white">1,000,000,000,000 LOON</span>
+                    </li>
+                    <li class="flex justify-between items-center border-b border-gray-700 pb-2">
+                        <span>Type:</span>
+                        <span class="font-semibold text-white">Move Module Token</span>
+                    </li>
+                    <li class="flex justify-between items-center">
+                        <span>LOON Price (Simulation):</span>
+                        <span class="font-semibold text-green-400" id="token-price">$0.00000045</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Topluluk Bağlantıları (Medium kaldırıldı) -->
+            <div class="card p-6 rounded-2xl shadow-xl">
+                <h2 class="text-xl font-bold mb-4 text-white">Community & Resources</h2>
+                <div class="flex flex-wrap gap-4">
+                    <a href="https://x.com/theloonies_nft" class="flex items-center bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full transition duration-200">
+                        <span class="text-2xl mr-2">🐦</span> Twitter
+                    </a>
+                    <a href="https://discord.gg/cKE7ghsS" class="flex items-center bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full transition duration-200">
+                        <span class="text-2xl mr-2">💬</span> Discord
+                    </a>
+                    <a href="https://explorer.aptoslabs.com/coin/0x268d4a7a2ad93274edf6116f9f20ad8455223a7ab5fc73154f687e7dbc3e3ec6::LOON::LOON?network=mainnet" class="flex items-center bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full transition duration-200">
+                        <span class="text-2xl mr-2">🔗</span> AptosScan
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center mt-10 p-4 border-t border-gray-800 text-gray-500 text-sm">
+            <p>&copy; 2024 LOON Aptos. All rights reserved. Data is for simulation purposes only.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // DOM elements
+        const currentHoldersEl = document.getElementById('current-holders');
+        const dailyChangeValueEl = document.getElementById('daily-change-value');
+        const dailyChangePercentEl = document.getElementById('daily-change-percent');
+        const tokenPriceEl = document.getElementById('token-price');
+        
+        // Simulated Contract Address
+        const contractAddress = "0x268d4a7a2ad93274edf6116f9f20ad8455223a7ab5fc73154f687e7dbc3e3ec6::LOON::LOON";
+
+        /**
+         * Simulates fetching data from a real Aptos indexer/API.
+         */
+        async function fetchLoonStats() {
+            // Mock data from API
+            const mockStats = {
+                currentHolders: 14523,
+                dailyHolderChange: 157, // positive = increase
+                dailyHolderChangePercent: 1.09,
+                priceUSD: 0.00000045,
+            };
+
+            // Simulate a network delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            return mockStats;
+        }
+
+        /**
+         * Formats a number with thousands separators.
+         */
+        function formatNumber(num) {
+            // Using 'en-US' locale for standard English number formatting (commas)
+            return new Intl.NumberFormat('en-US').format(num);
+        }
+
+        /**
+         * Renders the data to the UI.
+         */
+        async function updateUI() {
+            try {
+                const stats = await fetchLoonStats();
+                
+                // Current Holders Count
+                currentHoldersEl.textContent = formatNumber(stats.currentHolders);
+
+                // Daily Change Value and Color
+                const changeValue = formatNumber(stats.dailyHolderChange);
+                const isPositive = stats.dailyHolderChange >= 0;
+                
+                dailyChangeValueEl.textContent = `${isPositive ? '+' : ''}${changeValue}`;
+                dailyChangePercentEl.textContent = `${isPositive ? '+' : ''}${stats.dailyHolderChangePercent.toFixed(2)}%`;
+
+                // Color styling
+                // First, remove existing classes to handle color change correctly
+                dailyChangeValueEl.classList.remove('text-green-400', 'text-red-400');
+                dailyChangePercentEl.classList.remove('text-green-400', 'text-red-400');
+
+                if (isPositive) {
+                    dailyChangeValueEl.classList.add('text-green-400');
+                    dailyChangePercentEl.classList.add('text-green-400');
+                    dailyChangePercentEl.textContent += ' (Increase)';
+                } else {
+                    dailyChangeValueEl.classList.add('text-red-400');
+                    dailyChangePercentEl.classList.add('text-red-400');
+                    dailyChangePercentEl.textContent += ' (Decrease)';
+                }
+
+                // Price
+                tokenPriceEl.textContent = `$${stats.priceUSD}`;
+
+            } catch (error) {
+                console.error("Error loading statistics:", error);
+                currentHoldersEl.textContent = "Error";
+                dailyChangeValueEl.textContent = "Error";
+                dailyChangePercentEl.textContent = "Failed to load data";
+            }
+        }
+
+        /**
+         * Copies the contract address to the clipboard.
+         */
+        function copyContractAddress() {
+            // document.execCommand('copy') is preferred for compatibility
+            const tempInput = document.createElement('textarea');
+            tempInput.value = contractAddress;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand('copy');
+                alertBox('Contract address copied to clipboard!', 'success');
+            } catch (err) {
+                alertBox('Copy failed.', 'error');
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        /**
+         * Custom alert box (replacing alert())
+         */
+        function alertBox(message, type = 'info') {
+            const container = document.querySelector('.container');
+            let box = document.getElementById('custom-alert-box');
+            
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'custom-alert-box';
+                box.className = 'fixed top-4 right-4 p-4 rounded-xl shadow-2xl z-50 transition-all duration-300 transform translate-x-full opacity-0';
+                container.appendChild(box);
+            }
+
+            let bgColor = 'bg-gray-700';
+            let textColor = 'text-white';
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-600';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-600';
+            }
+
+            box.className = `fixed top-4 right-4 p-4 rounded-xl shadow-2xl z-50 transition-all duration-300 ${bgColor} ${textColor}`;
+            box.innerHTML = `<p class="font-semibold">${message}</p>`;
+
+            // Show
+            setTimeout(() => {
+                box.classList.remove('translate-x-full', 'opacity-0');
+                box.classList.add('translate-x-0', 'opacity-100');
+            }, 10);
+
+            // Hide
+            setTimeout(() => {
+                box.classList.remove('translate-x-0', 'opacity-100');
+                box.classList.add('translate-x-full', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize the application
+        window.onload = updateUI;
+    </script>
+</body>
+</html>
