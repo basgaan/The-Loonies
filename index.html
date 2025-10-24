@@ -40,11 +40,27 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Basit bir grafik simülasyonu için özel stil */
+        /* Grafik Konteyneri */
         #chart-placeholder {
             height: 250px;
             background: linear-gradient(to top, #1f2937, #111827);
             position: relative;
+        }
+
+        /* Grafik Çizgisi Animasyonu */
+        @keyframes drawLine {
+            from {
+                stroke-dashoffset: 1000;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .line-graph-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 3s ease-in-out forwards;
         }
     </style>
 </head>
@@ -56,7 +72,12 @@
             <h1 class="text-5xl md:text-7xl font-extrabold gradient-text">
                 LOON
             </h1>
-            <p class="text-xl md:text-2xl mt-2 text-gray-400">The Premier Token of the Aptos Ecosystem</p>
+            <p class="text-xl md:text-2xl mt-2 text-gray-400">
+                $LOON is the community token initiated from The Loonies, the official NFT collection of 
+                <a href="https://x.com/wapal_official" target="_blank" class="text-blue-400 hover:underline">@wapal_official</a>
+                on 
+                <a href="https://aptos.dev/" target="_blank" class="text-green-400 hover:underline">@Aptos</a>
+            </p>
         </header>
 
         <!-- Canlı İstatistikler (Stat Cards) -->
@@ -84,9 +105,11 @@
                     </svg>
                     Daily Holder Change
                 </p>
+                <!-- Holder Değişim Değeri -->
                 <div class="text-4xl font-bold mb-1" id="daily-change-value">
                     Loading...
                 </div>
+                <!-- Yüzde Değişim Açıklaması (Türkçe) -->
                 <p class="text-sm" id="daily-change-percent">Calculating...</p>
             </div>
 
@@ -109,23 +132,65 @@
             </div>
         </section>
         
-        <!-- Sahip Değişim Grafiği (Simülasyon) -->
+        <!-- Sahip Değişim Grafiği (Çizgi Grafik Simülasyonu) -->
         <section class="mb-12">
             <div class="card p-6 rounded-2xl shadow-xl">
                 <h2 class="text-xl font-bold mb-4 text-white">Holder Growth Chart (Last 7 Days)</h2>
-                <div id="chart-placeholder" class="rounded-xl overflow-hidden relative">
-                    <!-- Basit bir grafik simülasyonu -->
-                    <div class="absolute inset-0 flex items-end justify-between p-4 opacity-75">
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[40%]"></div>
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[60%]"></div>
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[50%]"></div>
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[80%]"></div>
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[70%]"></div>
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[90%]"></div>
-                        <div class="w-[10%] bg-purple-500 rounded-t-lg h-[95%]"></div>
-                    </div>
-                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-gray-500 text-lg font-mono">
-                        [Chart API connection simulation]
+                <div id="chart-placeholder" class="rounded-xl overflow-hidden relative p-4">
+                    <!-- SVG ile basit bir Çizgi Grafik (Line Chart) simülasyonu -->
+                    <svg width="100%" height="100%" viewBox="0 0 1000 220" preserveAspectRatio="none">
+                        
+                        <!-- Grid Lines (Yatay) -->
+                        <line x1="0" y1="20" x2="1000" y2="20" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
+                        <line x1="0" y1="70" x2="1000" y2="70" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
+                        <line x1="0" y1="120" x2="1000" y2="120" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
+                        <line x1="0" y1="170" x2="1000" y2="170" stroke="#374151" stroke-width="1" stroke-dasharray="5,5" />
+
+                        <!-- Çizgi Veri Noktaları (SVG Path 'd' attribute) -->
+                        <!-- Bu nokta dizisi, rastgele bir yükseliş trendi simüle eder (Sol alt -> Sağ üst) -->
+                        <path 
+                            class="line-graph-path"
+                            d="M 0 170 
+                               C 100 150, 200 180, 300 140
+                               C 400 100, 500 130, 600 90
+                               C 700 60, 800 80, 900 40
+                               L 1000 20"
+                            fill="none"
+                            stroke="#3b82f6" /* Secondary Color (Blue) */
+                            stroke-width="4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        
+                        <!-- Çizgi Altındaki Alan (Gradient Area) -->
+                        <defs>
+                            <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
+                            </linearGradient>
+                        </defs>
+                        <path 
+                            class="line-graph-path"
+                            d="M 0 170 
+                               C 100 150, 200 180, 300 140
+                               C 400 100, 500 130, 600 90
+                               C 700 60, 800 80, 900 40
+                               L 1000 20
+                               L 1000 220 L 0 220 Z"
+                            fill="url(#areaGradient)"
+                            stroke="none"
+                        />
+                    </svg>
+
+                    <!-- Etiketler (Günler) -->
+                    <div class="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-400 px-4 pb-1">
+                        <span>Day -6</span>
+                        <span>Day -5</span>
+                        <span>Day -4</span>
+                        <span>Day -3</span>
+                        <span>Day -2</span>
+                        <span>Day -1</span>
+                        <span>Today</span>
                     </div>
                 </div>
             </div>
@@ -157,7 +222,7 @@
                 </ul>
             </div>
 
-            <!-- Topluluk Bağlantıları (Medium kaldırıldı) -->
+            <!-- Topluluk Bağlantıları -->
             <div class="card p-6 rounded-2xl shadow-xl">
                 <h2 class="text-xl font-bold mb-4 text-white">Community & Resources</h2>
                 <div class="flex flex-wrap gap-4">
@@ -198,7 +263,7 @@
             // Mock data from API
             const mockStats = {
                 currentHolders: 14523,
-                dailyHolderChange: 157, // positive = increase
+                dailyHolderChange: 157, // positive = increase. Change this to a negative number to test 'azaldı' logic.
                 dailyHolderChangePercent: 1.09,
                 priceUSD: 0.00000045,
             };
@@ -214,7 +279,7 @@
          */
         function formatNumber(num) {
             // Using 'en-US' locale for standard English number formatting (commas)
-            return new Intl.NumberFormat('en-US').format(num);
+            return new Intl.NumberFormat('en-US').format(Math.abs(num));
         }
 
         /**
@@ -231,24 +296,28 @@
                 const changeValue = formatNumber(stats.dailyHolderChange);
                 const isPositive = stats.dailyHolderChange >= 0;
                 
-                dailyChangeValueEl.textContent = `${isPositive ? '+' : ''}${changeValue}`;
-                dailyChangePercentEl.textContent = `${isPositive ? '+' : ''}${stats.dailyHolderChangePercent.toFixed(2)}%`;
+                // Display the change value (with sign)
+                dailyChangeValueEl.textContent = `${isPositive ? '+' : '-'}${changeValue}`;
 
-                // Color styling
-                // First, remove existing classes to handle color change correctly
-                dailyChangeValueEl.classList.remove('text-green-400', 'text-red-400');
+                // Remove previous styling
+                dailyChangeValueEl.classList.remove('text-green-400', 'text-red-400', 'text-white');
                 dailyChangePercentEl.classList.remove('text-green-400', 'text-red-400');
-
-                if (isPositive) {
+                
+                // Apply new styling and Turkish descriptive text
+                if (stats.dailyHolderChange > 0) {
                     dailyChangeValueEl.classList.add('text-green-400');
                     dailyChangePercentEl.classList.add('text-green-400');
-                    dailyChangePercentEl.textContent += ' (Increase)';
-                } else {
+                    dailyChangePercentEl.textContent = `(${stats.dailyHolderChangePercent.toFixed(2)}%) Yüzde olarak arttı`;
+                } else if (stats.dailyHolderChange < 0) {
                     dailyChangeValueEl.classList.add('text-red-400');
                     dailyChangePercentEl.classList.add('text-red-400');
-                    dailyChangePercentEl.textContent += ' (Decrease)';
+                    dailyChangePercentEl.textContent = `(${stats.dailyHolderChangePercent.toFixed(2)}%) Yüzde olarak azaldı`;
+                } else {
+                    // Change is zero
+                    dailyChangeValueEl.classList.add('text-white');
+                    dailyChangePercentEl.textContent = 'Yüzde değişim yok';
                 }
-
+                
                 // Price
                 tokenPriceEl.textContent = `$${stats.priceUSD}`;
 
@@ -256,7 +325,7 @@
                 console.error("Error loading statistics:", error);
                 currentHoldersEl.textContent = "Error";
                 dailyChangeValueEl.textContent = "Error";
-                dailyChangePercentEl.textContent = "Failed to load data";
+                dailyChangePercentEl.textContent = "Veri yüklenemedi";
             }
         }
 
@@ -272,9 +341,9 @@
             
             try {
                 document.execCommand('copy');
-                alertBox('Contract address copied to clipboard!', 'success');
+                alertBox('Sözleşme adresi panoya kopyalandı!', 'success');
             } catch (err) {
-                alertBox('Copy failed.', 'error');
+                alertBox('Kopyalama başarısız oldu.', 'error');
             }
             document.body.removeChild(tempInput);
         }
